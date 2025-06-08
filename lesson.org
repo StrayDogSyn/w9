@@ -1,0 +1,363 @@
+#+TITLE: Introduction to Machine Learning Workflow and Model Types
+#+AUTHOR: Evan Misshula
+#+DATE: \today
+#+LANGUAGE: en
+#+LATEX_HEADER: \usepackage[style=apa, backend=biber]{biblatex}
+#+LATEX_HEADER: \DeclareLanguageMapping{american}{american-apa}
+#+LATEX_HEADER: \addbibresource{./refs/refs.bib}
+#+LATEX_HEADER: \AtEveryBibitem{\clearfield{note}}
+#+LATEX_HEADER: \usepackage{endnotes}
+#+LATEX_HEADER: \let\footnote=\endnote
+#+LATEX_HEADER: \usepackage{./jtc}
+#+STARTUP: beamer
+#+OPTIONS: H:2 toc:nil num:t
+#+LATEX_CLASS: beamer
+#+LATEX_CLASS_OPTIONS: [aspectratio=169]
+#+COLUMNS: %45ITEM %10BEAMER_ENV(Env) %10BEAMER_ACT(Act) %4BEAMER_COL(Col) %8BEAMER_OPT(Opt)
+
+#+name: initialize_lang
+#+source: configuration
+#+begin_src emacs-lisp :results output :exports none
+  (require 'ob-mermaid)
+  (setq ob-mermaid-cli-path "/home/evan/.nvm/versions/node/v20.1.0/bin/mmdc")
+  ;; Doesn't work
+	     ;; first it is necessary to ensure that Org-mode loads support for the
+	      ;; languages used by code blocks in this article
+	      (org-babel-do-load-languages
+	       'org-babel-load-languages
+	       '(
+		 (ditaa      . t)     
+		 (dot        . t)
+		 (emacs-lisp . t)
+		 (haskell    . t)
+		 (org        . t)
+		 (perl       . t)
+		 (python     . t)
+		 (R          . t)
+		 (ruby       . t)
+		 (plantuml   . t)
+		 (mermaid    . t)
+		 (sqlite     . t)))
+	      ;; then we'll remove the need to confirm evaluation of each code
+	      ;; block, NOTE: if you are concerned about execution of malicious code
+	      ;; through code blocks, then comment out the following line
+	  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+	  (setq org-confirm-babel-evaluate nil)
+	    (setq org-ditaa-jar-path "/usr/bin/ditaa")
+	    (setq org-plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
+	    (add-to-list 'exec-path "/home/evan/.nvm/versions/node/v20.1.0/bin")
+      ;;      (setq org-mermaid-jar-path "/home/evan/.nvm/versions/node/v20.1.0/lib/node_modules/@mermaid-js/mermaid-cli/node_modules/mermaid
+      ;;    ")
+    (setenv "PATH" (concat (getenv "PATH") ":/home/evan/.nvm/versions/node/v20.1.0/bin"))
+    (add-to-list 'exec-path "/home/evan/.nvm/versions/node/v20.1.0/bin")
+
+	   (setenv "PUPPETEER_EXECUTABLE_PATH" "/usr/bin/google-chrome-stable")
+	   (setenv "PUPPETEER_DISABLE_SANDBOX" "1")
+  (setq org-babel-mermaid-cli-path "/home/evan/.nvm/versions/node/v20.1.0/bin/mmdc")
+
+
+	   (setenv "PATH" (concat "/home/evan/.nvm/versions/node/v20.1.0/bin:" (getenv "PATH")))
+	    ;; finally we'll customize the default behavior of Org-mode code blocks
+	      ;; so that they can be used to display examples of Org-mode syntax
+	      (setf org-babel-default-header-args:org '((:exports . "code")))
+	      (setq org-babel-inline-result-wrap '%s)
+	      ;; This gets rid of the wrapping around the results of evaluated org mode 
+	      ;; in line code
+	      (setq reftex-default-bibliography '("/home/emisshula/proposal/mybib.bib"))
+	      (setq org-latex-prefer-user-labels t)
+      (plist-put org-format-latex-options :scale 3.0)
+      (global-set-key (kbd "C-c e") 'insEq)
+#+end_src
+
+#+RESULTS: configuration
+
+* Ingestion & Preprocessing
+** End to end process                                          :B_definition:
+:PROPERTIES:
+:BEAMER_env: definition
+:END:
+An *ML workflow* is a sequence of steps to build and deploy a model that
+solves a problem using data.
+
+** The pipeline                                                     :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+
+| Ingestion & Preprocessing | Analysis            | Modeling   | Deployment |
+|---------------------------+---------------------+------------+------------|
+| Definition                | EDA                 | Selection  | Tuning     |
+| Data Collection           | Feature Engineering | Training   | Deployment |
+| Cleaning                  |                     | Evaluation | Monitoring |
+
+#+begin_src mermaid :file workflow.png
+graph LR
+  A[Collection] --> B[Cleaning]
+  B --> C[Features]
+  C --> D[Training]
+  D --> E[Evaluation]
+  E --> F[Deployment]
+#+end_src
+
+#+RESULTS:
+[[file:workflow.png]]
+
+** ML Workflow Graph                                                :B_frame:
+:PROPERTIES:
+:BEAMER_env: frame
+:END:
+#+BEGIN_CENTER
+#+ATTR_LATEX: :width=0.8\linewidth
+[[file:workflow.png]]
+#+END_CENTER
+* Problem Definition
+** Define the problem                                               :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- What are you trying to do?
+- Who is the end user of the prediction?
+- What decisions will be based on this output?
+
+- Predict tomorrow's temperature?
+- Predict a stock price?
+- Is this email spam?
+** Classify or predict?                                             :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+
+*Reminder* : the dependent variable is what you are trying to
+predict
+
+The other names are: response, "response variable", "regressand",
+"criterion", "predicted variable", "measured variable", "explained
+variable", "experimental variable", "responding variable", "outcome
+variable", "output variable", "target" or "label".
+
+** Classification vs Regression
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+
+*classification* aims to categorize data into distinct groups or
+classes, while *regression* involves estimating a continuous value, like
+a number or a date.
+
+** Classification vs Prediction Quiz                                :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- Housing prices?
+- If an individual is unhoused?
+- Is the email spam?
+- Will I get a job?
+- Income distribution of programmers?
+- Which party will win the Presential Election?
+* Collection
+** Data Collection                                                  :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- What do I have and how is it organized?
+  - What kind of file is it?
+    - CSV, JSON, Pickle, Excel Spreadsheet
+  - Does my data exist in a database?
+    - Do I need SQL to retrieve it?
+  - Is the data available through an API?
+    - In general better (more accurate, more frequent) data can be
+      expensive?
+    - Do we think we will learn enough to justify the costs? Is the
+      project a demo or is there real money riding on the answer?
+
+** Data Collection tools                                            :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+Elementary libraries
+- *pandas* csv, json and some Relational Database
+- *requests* good for well defined APIs
+- *openpyxl* great way to import data from existing Excel Spreadsheets
+- *SQL* if your data is in a relational database
+- *BeautifulSoup* or *Selenium* for web scraping (if needed)
+- *duckdb* or *sqlite* for lightweight DB queries
+
+** Big Data Data Collection Tools                                   :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+Big Data & Distributed Libraries
+- *PySpark* for distributed reading of CSV, JSON, Parquet, Avro, ORC files
+- *Dask* scales pandas-like operations to multi-core or cluster setups
+- *Apache Kafka* for real-time data ingestion from event streams
+- *HDFS / S3 APIs* for direct access to distributed file systems
+- *Delta Lake* / *Iceberg* transactional layers on big data storage lakes
+- *SQL Engines*: *Hive*, *Presto*, *Trino*, *Spark SQL* for querying
+  large-scale data
+* Data Cleaning  
+** Clean your data                                                  :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+*Data is always messier than you are told!*
+
+- Be aware of missing values, outliers and duplicates
+- Verify your data types
+
+** Data Anomaly Definitions                                         :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- *Missing Values*: Observations where data is not recorded or
+  unavailable. Common causes include data entry errors, system
+  glitches, or sensor failures.
+
+- *Outliers*: Data points that differ significantly from other
+  observations in the dataset. They may indicate variability in
+  measurement, experimental errors, or novel events.
+
+- *Duplicates*: Records that appear more than once in a dataset but
+  represent the same real-world entity. These can bias results and
+  arise from repeated logging or failed deduplication.
+** Data Cleaning subtasks                                           :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- Convert types (e.g., dates, categorical)
+
+- Don't normalize or scale numeric features (wait until modeling)
+
+- Detect inconsistent labels or typos in categorical data
+
+** Never clean data by hand                                         :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+
+- Never clean your data by hand.  Always use scripts so that your
+  results can be reproduced.
+
+- Documentation is a way to be kind to your future self. The truth
+  is you will never remember why you did what did. Write it down!
+
+* Isolation Trees     
+** Explanation of Isolation Forest                                  :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+- The isolation forest was introduced by Liu, Ting and Zhou in 2008. 
+\pause
+- Now it's time for some math
+
+** Isolation Forest: Mathematical Intuition
+:PROPERTIES:
+:BEAMER_env: frame
+:END:
+
+*** Problem Setting
+
+Given a dataset \( D = \{x_1, x_2, \ldots, x_n\} \subset \mathbb{R}^d
+\), the goal is to assign an *anomaly score* \( s(x) \in [0, 1] \)
+to each point \( x \in D \) based on how easily it can be
+*isolated*.
+
+** Core Ideas                                                       :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+
+- Anomalies are rare and different — they are easier to isolate.
+- Instead of profiling normal points, we attempt to isolate each point
+  using random partitions.
+- The *fewer splits* needed to isolate a point, the more likely it is
+  to be an anomaly.
+
+** Isolation Forest: Tree Construction
+:PROPERTIES:
+:BEAMER_env: frame
+:END:
+
+** Isolation Tree Definition                                        :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+
+An *isolation tree* is a binary tree where each node splits data based
+on a randomly chosen feature and a randomly chosen split point within
+that feature's range.
+
+** Sampling and Splitting                                           :B_block:
+:PROPERTIES:
+:BEAMER_env: block
+:END:
+
+1. Select a random subsample \( D_t \subset D \), of fixed size \(
+   \psi \) (typically \( \psi = 256 \)).
+
+2. Recursively partition:
+   - Randomly select a feature index \( j \in \{1, \ldots, d\} \).
+   - Choose a split point \( p \sim \text{Uniform}(\min x_j, \max x_j)
+     \) for that feature.
+   - Split the data: 
+     \[
+     D_L = \{x \in D_t : x_j < p\}, \quad D_R = \{x \in D_t : x_j \geq p\}
+     \]
+   - Recurse on \( D_L \) and \( D_R \) until:
+     - Node contains a single instance, or
+     - Tree reaches max depth \( \lceil \log_2 \psi \rceil \)
+
+** Isolation Forest: Scoring Mechanism
+:PROPERTIES:
+:BEAMER_env: frame
+:END:
+
+*** Path Length
+
+- For a point \( x \), the *path length* \( h_t(x) \) is the number
+  of edges from the root of the tree to the leaf where \( x \) ends
+  up.
+
+*** Expected Path Length
+
+- The average path length over all trees:
+  \[
+  E[h(x)] = \frac{1}{T} \sum_{t=1}^T h_t(x)
+  \]
+
+*** Anomaly Score
+
+- The anomaly score is defined as:
+  \[
+  s(x) = 2^{ - \frac{E[h(x)]}{c(\psi)} }
+  \]
+  where:
+  \[
+  c(\psi) = 2 H(\psi - 1) - \frac{2(\psi - 1)}{\psi}
+  \]
+  and \( H(n) \approx \ln(n) + \gamma \) is the
+  \( n \)-th harmonic number,
+  with \( \gamma \approx 0.577 \) (Euler–Mascheroni constant).
+
+** Interpretation
+:PROPERTIES:
+:BEAMER_env: frame
+:END:
+
+*** Interpreting the Score
+
+- \( s(x) \approx 1 \): \( x \) is likely an *outlier* (isolated in
+  fewer steps).
+- \( s(x) \approx 0 \): \( x \) is likely *normal* (harder to isolate).
+- Use a threshold (e.g., \( s(x) > 0.7 \)) to flag anomalies.
+  
+
+** Summary and Use
+:PROPERTIES:
+:BEAMER_env: frame
+:END:
+
+- Unsupervised: Needs no labeled data
+- Fast, interpretable
+- Well-suited for high-dimensional data
+- Implementation: `sklearn.ensemble.IsolationForest`
+

@@ -1,0 +1,58 @@
+
+## **Pre-Lesson Quiz**
+
+**Q1.**
+Which of the following steps is part of the typical ML workflow?
+A. Model deployment
+B. Hypothesis testing
+C. Survey design
+D. Manual feature labeling
+
+---
+
+**Q2.**
+In machine learning, what is the term commonly used for the variable you are trying to predict?
+A. Feature
+B. Covariate
+C. Response variable
+D. Predictor
+
+---
+
+**Q3.**
+Which task is best approached with *regression* rather than *classification*?
+A. Determining if an email is spam
+B. Predicting a person’s height in centimeters
+C. Detecting fraudulent credit card transactions
+D. Identifying the breed of a dog from an image
+
+---
+
+**Q4.**
+Which of the following is **not** typically a goal of data cleaning?
+A. Identifying missing values
+B. Normalizing numeric features before modeling
+C. Detecting outliers
+D. Removing duplicate entries
+
+---
+
+**Q5.**
+Which library is best suited for real-time ingestion from event streams in Big Data environments?
+A. Pandas
+B. SQL
+C. Apache Kafka
+D. Openpyxl
+
+---
+
+**Q6.**
+In an Isolation Forest, what indicates a point is likely to be an anomaly?
+A. A large number of splits are required to isolate it
+B. The average path length is short
+C. It appears multiple times in the dataset
+D. It has the highest frequency of occurrence
+
+---
+
+

@@ -1,0 +1,9 @@
+
+### **Answer Key**
+
+1. **B** — Ingestion & Preprocessing, Analysis, Modeling, Deployment
+2. **C** — `df.describe()`
+3. **D** — Q-Q Plot
+4. **C** — Evidence of non-normal skew/kurtosis
+5. **B** — It equals zero only when $X$ and $Y$ are independent
+6. **D** — Mutual information is a special case of KL divergence

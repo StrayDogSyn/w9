@@ -1,0 +1,9 @@
+
+## **Answer Key**
+
+**Q1.** A. Model deployment
+**Q2.** C. Response variable
+**Q3.** B. Predicting a person’s height in centimeters
+**Q4.** B. Normalizing numeric features before modeling
+**Q5.** C. Apache Kafka
+**Q6.** B. The average path length is short

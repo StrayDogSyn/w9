@@ -1,0 +1,10 @@
+
+## **Answer Key**
+
+1. **B** — ML workflow consists of steps like *Ingestion → Analysis → Modeling → Deployment*.
+2. **C** — Model training minimizes a loss function across training data.
+3. **C** — The generalization gap is $R(\theta) - \hat{R}(\theta)$.
+4. **C** — MSE is a standard regression metric.
+5. **C** — k-fold CV provides an estimate of generalization error.
+6. **B** — Complex models typically reduce bias but increase variance.
+

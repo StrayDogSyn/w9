@@ -1,0 +1,57 @@
+
+### **Quiz: Introduction to Machine Learning Analysis and Modeling**
+
+**1.** What are the four major stages in the machine learning workflow described in the pipeline table?
+
+**A.** Feature Engineering, Selection, Training, Monitoring
+**B.** Ingestion & Preprocessing, Analysis, Modeling, Deployment
+**C.** Data Collection, Training, Testing, Evaluation
+**D.** EDA, Data Cleaning, Feature Scaling, Modeling
+
+---
+
+**2.** Which of the following tools in Pandas provides summary statistics only for numeric columns by default?
+
+**A.** `df.info()`
+**B.** `df.describe(include='object')`
+**C.** `df.describe()`
+**D.** `df.memory_usage()`
+
+---
+
+**3.** Which visual tool is most appropriate for checking tail behavior in univariate data?
+
+**A.** Histogram
+**B.** KDE plot
+**C.** Boxplot
+**D.** Q-Q Plot
+
+---
+
+**4.** What does a *low p-value* (e.g., < 0.05) from D'Agostino’s $K^2$ test indicate?
+
+**A.** Evidence the data is normally distributed
+**B.** No evidence of non-normality
+**C.** Evidence of non-normal skew/kurtosis
+**D.** The test cannot determine skewness
+
+---
+
+**5.** Which statement is TRUE regarding mutual information $I(X; Y)$?
+
+**A.** It detects only linear relationships between variables
+**B.** It equals zero only when $X$ and $Y$ are independent
+**C.** It is symmetric and always equals KL divergence
+**D.** It is defined only for Gaussian distributions
+
+---
+
+**6.** What is the relationship between mutual information and KL divergence?
+
+**A.** They are unrelated concepts
+**B.** Mutual information is always greater than KL divergence
+**C.** KL divergence is a special case of mutual information
+**D.** Mutual information is a special case of KL divergence
+
+---
+

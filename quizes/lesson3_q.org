@@ -1,0 +1,54 @@
+## **Quiz: Introduction to Machine Learning**
+
+**Author**: Evan Misshula
+**Instructions**: Choose the best answer for each question. 
+
+---
+
+**1. Which of the following best describes the ML workflow?**
+A. Collection → Training → Testing
+B. Ingestion → Modeling → Deployment
+C. Data cleaning → Clustering → Classification
+D. Analysis → Optimization → Interpretation
+
+---
+
+**2. What is the primary objective of model training?**
+A. To maximize the validation score
+B. To reduce the dimensionality of input data
+C. To minimize a loss function over the training data
+D. To compare various models using test data
+
+---
+
+**3. What does the generalization gap represent?**
+A. The difference between the training and testing datasets
+B. The performance gain from using deep models
+C. The difference between expected and empirical risk
+D. The effect of feature scaling on model performance
+
+---
+
+**4. In a regression setting, which metric would you most likely use to evaluate model performance?**
+A. Accuracy
+B. Cross-entropy loss
+C. Mean Squared Error (MSE)
+D. F1 Score
+
+---
+
+**5. What does k-fold cross-validation aim to estimate?**
+A. Training loss
+B. Expected runtime of the model
+C. Generalization error
+D. Irreducible error
+
+---
+
+**6. According to the bias-variance tradeoff, increasing model complexity usually leads to:**
+A. Higher bias and lower variance
+B. Lower bias and higher variance
+C. Lower both bias and variance
+D. Higher both bias and variance
+
+---
