@@ -8,8 +8,14 @@ from sklearn.ensemble import IsolationForest
 from sklearn.decomposition import PCA
 
 # Load the iris dataset
-iris = load_iris()
-df = pd.DataFrame(iris.data, columns=iris.feature_names)
+iris_bunch = load_iris()
+# Handle the case where load_iris might return a tuple
+if isinstance(iris_bunch, tuple):
+    iris_data = iris_bunch[0]
+else:
+    iris_data = iris_bunch
+    
+df = pd.DataFrame(iris_data.data, columns=iris_data.feature_names)
 
 # Add a duplicate row
 df = pd.concat([df, df.iloc[[0]]], ignore_index=True)
@@ -57,4 +63,4 @@ plt_path = data_path / plot_name
 plt.savefig(plt_path)
 plt.close()
 
-plt_path
+print(f"Plot saved to: {plt_path}")
