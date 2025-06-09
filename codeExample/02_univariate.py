@@ -5,19 +5,19 @@ from scipy.stats import norm, skewnorm, t
 
 np.random.seed(42)
 
-# Generate samples
-normal = norm.rvs(size=1000)
-skewed = skewnorm.rvs(a=10, size=1000)     # a > 0 → right skew
-heavy = t.rvs(df=2, size=1000)             # df small → heavy tails
+# Generate samples  
+normal = np.array(norm.rvs(size=1000))
+skewed = np.array(skewnorm.rvs(a=10, size=1000))     # a > 0 → right skew
+heavy = np.array(t.rvs(df=2, size=1000))             # df small → heavy tails
 
 # Plot
 plt.figure(figsize=(12, 4))
 
-for i, (data, label) in enumerate([(normal, "Normal"), 
+for i, (dataset, label) in enumerate([(normal, "Normal"), 
                                    (skewed, "Skewed"), 
                                    (heavy, "Heavy-Tailed")]):
     plt.subplot(1, 3, i+1)
-    sns.histplot(data, kde=True, stat='density', bins=30)
+    sns.histplot(dataset, kde=True, stat='density', bins=30)
     plt.title(label)
     plt.xlabel("Value")
     plt.ylabel("Density")
@@ -28,10 +28,10 @@ plt.show()
 ## Box Plot Normal vs Skewed
 plt.figure(figsize=(12, 4))
 
-for i, (data, label) in enumerate([(normal, "Normal"), 
+for i, (dataset, label) in enumerate([(normal, "Normal"), 
                                    (skewed, "Skewed")]):
     plt.subplot(1, 2, i+1)
-    sns.boxplot(y=data)
+    sns.boxplot(y=dataset)
     plt.title(label)
     plt.xlabel(label)
     plt.ylabel("quantile")
@@ -44,38 +44,38 @@ from scipy import stats
 
 #import matplotlib.pyplot as plt
 plt.figure(figsize=(12, 4))
-for i, (data, label) in enumerate([(normal, "Normal"), 
+for i, (dataset, label) in enumerate([(normal, "Normal"), 
                                    (heavy, "Heavy")]):
     plt.subplot(1, 2, i+1)
-    stats.probplot(data, dist="norm", plot=plt)
+    stats.probplot(dataset, dist="norm", plot=plt)
     plt.title("Q-Q Plot-" + label)
 plt.tight_layout()
 plt.show()
 
 
 
-#data = normal
-data = skewed
+#test_data = normal
+test_data = skewed
 
 show_normal = False 
 if show_normal:
-    data = normal
+    test_data = normal
 else:
-    data = skewed
+    test_data = skewed
 
 
 from scipy.stats import normaltest
-stat, p = normaltest(data)
+stat, p = normaltest(test_data)
 print(f"K² Statistic: {stat:.4f}, p-value: {p:.4f}")
 
 show_normal = False 
 if show_normal:
-    data = normal
+    test_data = normal
 else:
-    data = heavy
+    test_data = heavy
 
 from scipy.stats import jarque_bera
-stat, p = jarque_bera(data)
+stat, p = jarque_bera(test_data)
 print(f"JB Statistic: {stat:.4f}, p-value: {p:.4f}")
 
 
